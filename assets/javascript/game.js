@@ -1,14 +1,39 @@
 $(document).ready(function () {
 
-    var rey = { attack: 9, hp: 110, counterAttack: 15 };
-    var finn = { attack: 7, hp: 120, counterAttack: 10 };
-    var kylo = { attack: 10, hp: 130, counterAttack: 14 };
-    var phasma = { attack: 8, hp: 140, counterAttack: 12 };
+    var rey = { name: "rey", attack: 9, hp: 110, counterAttack: 15 };
+    var finn = { name: "finn", attack: 7, hp: 120, counterAttack: 10 };
+    var kylo = { name: "kylo", attack: 10, hp: 130, counterAttack: 14 };
+    var phasma = { name: "phasma", attack: 8, hp: 140, counterAttack: 12 };
+    var characters = [rey, finn, kylo, phasma];
 
-    $("#rey").children(".hp").text(rey.hp);
-    $("#finn").children(".hp").text(finn.hp);
-    $("#kylo").children(".hp").text(kylo.hp);
-    $("#phasma").children(".hp").text(phasma.hp);
+    $("#rey").attr({
+        "data-attack": rey.attack,
+        "data-hp": rey.hp,
+        "data-counterAttack": rey.counterAttack
+    });
+
+    $("#finn").attr({
+        "data-attack": finn.attack,
+        "data-hp": finn.hp,
+        "data-counterAttack": finn.counterAttack
+    });
+
+    $("#kylo").attr({
+        "data-attack": kylo.attack,
+        "data-hp": kylo.hp,
+        "data-counterAttack": kylo.counterAttack
+    });
+
+    $("#phasma").attr({
+        "data-attack": phasma.attack,
+        "data-hp": phasma.hp,
+        "data-counterAttack": phasma.counterAttack
+    });
+
+    for (var i = 0; i < characters.length; i++) {
+        $("#" + characters[i].name).children(".hp").text(characters[i].hp);
+    }
+
 
 
     $("#character-select").on("click", ".character-container", function () { //initial character selection
@@ -29,7 +54,7 @@ $(document).ready(function () {
         $(attackButton).text("Attack!"); //add text to button
         $("#dynamic-button").append(attackButton); //insert button
         $(this).attr("class", "contestant"); //change class of enemy to contestant
-        $(".enemy").attr("class", "enemy-two");
+        $(".enemy").attr("class", "enemy-two"); //change class of other enemies to enemy-two
         $("#enemy").append(this); //move contestant to enemy battle area
         $("#fight").addClass("page-header"); //add header class to fight area
         $("#fight").text("Battle Area"); //add text to fight area
@@ -37,16 +62,10 @@ $(document).ready(function () {
     });
 
     $("#dynamic-button").on("click", "#attack-button", function () {
-        var contestantHitPoints = Number($(".contestant").children(".hp").text());
-
-        while (contestantHitPoints > 0) {
-            if ($(".hero").children("#rey")) {
-                $(".contestant").children(".hp").text(contestantHitPoints - rey.attack);
-                rey.attack += rey.attack;
-            }
-        }
-
-
+        var contestantHitPoints = Number($(".contestant").attr("data-hp"));
+        var heroAttack = Number($(".hero").attr("data-attack"));
+        contestantHitPoints = contestantHitPoints - heroAttack;
+        $(".contestant").children(".hp").text(contestantHitPoints - heroAttack);
+        heroAttack += heroAttack;
     });
-
 });
